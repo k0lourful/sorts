@@ -14,6 +14,7 @@ DynArray::~DynArray() {
 }
 
 void DynArray::allocateMemory(const int &size) {
+    len = size;
     arr = new int[size];
 }
 
@@ -38,6 +39,11 @@ void DynArray::randomise() {
     }
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::shuffle(arr, arr + len, std::default_random_engine(seed));
+}
+
+void DynArray::clear(){
+    delete[] arr;
+    len = 0;
 }
 
 void DynArray::insertionSort() {

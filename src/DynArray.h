@@ -10,10 +10,12 @@ public:
 	~DynArray();
 
 	void allocateMemory(const int &len);
-	[[nodiscard]] int getLength() const;
+	int getLength() const;
 	void setValue(const int &ind, const int &val);
-	[[nodiscard]] int getValue(const int &ind) const;
+	int getValue(const int &ind) const;
 	void randomise();
+	void clear();
+
 	void insertionSort();
 	void shellSort();
 };
