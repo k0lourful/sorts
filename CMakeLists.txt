@@ -5,6 +5,4 @@ set(CMAKE_CXX_STANDARD 20)
 
 include_directories(src)
 
-add_executable(sorts
-        src/DynArray.cpp
-        src/main.cpp)
+add_subdirectory(src)
