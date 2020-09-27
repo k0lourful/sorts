@@ -28,20 +28,19 @@ void DynArray::setValue(const int &ind, const int &val) {
 
 int DynArray::getValue(const int &ind) const {
     if (ind < 0 || ind >= len)
-//		return INT_MAX;
         return INT32_MAX;
     return arr[ind];
 }
 
 void DynArray::randomise() {
     for (int i = 0; i < len; ++i) {
-        arr[i] = i + 1;
+        arr[i] = i;
     }
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::shuffle(arr, arr + len, std::default_random_engine(seed));
 }
 
-void DynArray::clear(){
+void DynArray::clear() {
     delete[] arr;
     len = 0;
 }
@@ -59,21 +58,75 @@ void DynArray::insertionSort() {
 }
 
 void DynArray::shellSort() {
-    //for (int d = len / 2; d > 0; d /= 2) {
-    //	for (int i = d; i < len; ++i) {
-    //		for (int j = i - d; j >= 0 && getValue(j) > getValue(j + d); j -= d) {
-    //			int tmp = getValue(j);
-    //			setValue(j, getValue(j + d));
-    //			setValue(j + d, tmp);
-    //		}
-    //	}
-    //}
-    for (int i = 0; i < len; ++i) {
-        for (int j = i; j < len; ++j) {
-            int k, tmp = arr[j];
-            for (k = j; k >= i && arr[k - i] > tmp; k -= i)
-                arr[k] = arr[k - i];
-            arr[k] = tmp;
+    int i;
+    for (i = 1; 3 * i + 1 <= len / 9; ++i);
+    int h[i];
+    for (i = 0; i <= len / 9; ++i)
+        h[i] = 3 * i + 1;
+
+    for (i = len / 9; i >= 0; --i)
+        for (int j = h[i]; j < len; ++j) {
+            int k = j, v = arr[j];
+            while (k >= h[i] && v < arr[k - h[i]]) {
+                arr[k] = arr[k - h[i]];
+                k -= h[i];
+            }
+            arr[k] = v;
         }
+}
+
+void DynArray::quickSort(const int &min, const int &max) {
+    if(min >= max) return;
+
+    int medVal = arr[min];
+    int lo = min, hi = max;
+
+    while (true){
+        while(arr[hi]>=medVal){
+            --hi;
+            if(hi<=lo)break;
+        }
+        if(hi<=lo){
+            arr[lo]=medVal;
+            break;
+        }
+        arr[lo]=arr[hi];
+
+        ++lo;
+        while(arr[lo]<medVal){
+            ++lo;
+            if(lo>=hi) break;
+        }
+        if(lo>=hi){
+            lo=hi;
+            arr[hi]=medVal;
+            break;
+        }
+        arr[hi]=arr[lo];
     }
+
+    quickSort(min,lo-1);
+    quickSort(lo+1,max);
+}
+
+void DynArray::countingSort() {
+    int min = arr[0], max = arr[0];
+    for (int i = 0; i < len; ++i) {
+        if (min > arr[i]) min = arr[i];
+        if (max < arr[i]) max = arr[i];
+    }
+
+    int *counts = new int[max];
+
+    for (int i = 0; i <= max - min; ++i)
+        counts[i] = 0;
+
+    for (int i = 0; i < len; ++i)
+        ++counts[arr[i]];
+
+    int ind = 0;
+    for (int i = min; i <= max; ++i)
+        for (int j = 0; j < counts[i]; ++j)
+            arr[ind++] = i;
+    delete[] counts;
 }
