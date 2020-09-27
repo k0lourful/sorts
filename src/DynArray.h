@@ -18,4 +18,6 @@ public:
 
 	void insertionSort();
 	void shellSort();
+    void quickSort(const int& min, const int& max);
+    void countingSort();
 };
