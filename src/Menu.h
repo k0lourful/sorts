@@ -21,20 +21,20 @@ void choice(const int &c, DynArray &arr) {
         }
 
         case 1: {
-            if(arr.getLength() != 0)
+            if (arr.getLength() != 0)
                 arr.clear();
 
             int size, value;
             std::cout << "Enter array size: ";
             std::cin >> size;
-            while(size < 1) {
+            while (size < 1) {
                 std::cout << "Invalid array size, try again: ";
                 std::cin >> size;
             }
 
             arr.allocateMemory(size);
             std::cout << "Enter values: \n";
-            for(int i = 0; i < size; ++i){
+            for (int i = 0; i < size; ++i) {
                 std::cin >> value;
                 arr.setValue(i, value);
             }
@@ -44,13 +44,13 @@ void choice(const int &c, DynArray &arr) {
         }
 
         case 2: {
-            if(arr.getLength() != 0)
+            if (arr.getLength() != 0)
                 arr.clear();
 
             int size;
             std::cout << "Enter array size: ";
             std::cin >> size;
-            while(size < 1) {
+            while (size < 1) {
                 std::cout << "Invalid array size, try again: ";
                 std::cin >> size;
             }
@@ -63,20 +63,61 @@ void choice(const int &c, DynArray &arr) {
         }
 
         case 3: {
-            if(!arr.getLength())
+            if (arr.getLength() != 0)
+                arr.clear();
+
+            int size;
+            std::cout << "Enter array size: ";
+            std::cin >> size;
+            while (size < 1) {
+                std::cout << "Invalid array size, try again: ";
+                std::cin >> size;
+            }
+
+            arr.allocateMemory(size);
+            arr.randomise();
+
+            std::cout << "Created random array.\n\n";
+            break;
+        }
+
+        case 4: {
+            if (!arr.getLength())
                 std::cout << "Array is empty.\n\n";
-            else{
+            else {
                 arr.insertionSort();
                 std::cout << "Sorted array.\n\n";
             }
             break;
         }
 
-        case 4: {
-            if(!arr.getLength())
+        case 5: {
+            if (!arr.getLength())
                 std::cout << "Array is empty.\n\n";
-            else{
+            else {
                 arr.shellSort();
+                std::cout << "Sorted array.\n\n";
+            }
+            break;
+        }
+
+        case 6: {
+            int size = arr.getLength();
+
+            if (!arr.getLength())
+                std::cout << "Array is empty.\n\n";
+            else {
+                arr.quickSort(0, size - 1);
+                std::cout << "Sorted array.\n\n";
+            }
+            break;
+        }
+
+        case 7: {
+            if (!arr.getLength())
+                std::cout << "Array is empty.\n\n";
+            else {
+                arr.countingSort();
                 std::cout << "Sorted array.\n\n";
             }
             break;
@@ -95,8 +136,11 @@ void menu(DynArray &arr) {
         std::cout << "0. Print array\n";
         std::cout << "1. Enter array\n";
         std::cout << "2. Create random array\n";
-        std::cout << "3. Sort array using insertion sort\n";
-        std::cout << "4. Sort array using Shell sort\n";
+        std::cout << "3. Create random array with different numbers\n";
+        std::cout << "4. Sort array using insertion sort\n";
+        std::cout << "5. Sort array using Shell sort\n";
+        std::cout << "6. Sort array using quick sort\n";
+        std::cout << "7. Sort array using counting sort\n";
 
         std::cin >> c;
 
