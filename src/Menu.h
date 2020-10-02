@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 #include <iostream>
 #include "DynArray.h"
 #include "clearScreen.h"
@@ -9,7 +10,7 @@ void choice(const int &c, DynArray &arr) {
 
     switch (c) {
         case 0: {
-            int size = arr.getLength();
+            const int size = arr.getLength();
             if (size < 1)
                 std::cout << "Array is empty\n\n";
             else {
@@ -47,7 +48,7 @@ void choice(const int &c, DynArray &arr) {
             if (arr.getLength() != 0)
                 arr.clear();
 
-            int size;
+            int size, min, max;
             std::cout << "Enter array size: ";
             std::cin >> size;
             while (size < 1) {
@@ -56,7 +57,10 @@ void choice(const int &c, DynArray &arr) {
             }
 
             arr.allocateMemory(size);
-            arr.randomise();
+
+            std::cout << "Enter random numbers range: ";
+            std::cin >> min >> max;
+            arr.randomise(min, max);
 
             std::cout << "Created random array.\n\n";
             break;
@@ -75,7 +79,7 @@ void choice(const int &c, DynArray &arr) {
             }
 
             arr.allocateMemory(size);
-            arr.randomise();
+            arr.randomiseDifferentValues();
 
             std::cout << "Created random array.\n\n";
             break;
@@ -102,9 +106,9 @@ void choice(const int &c, DynArray &arr) {
         }
 
         case 6: {
-            int size = arr.getLength();
+            const int size = arr.getLength();
 
-            if (!arr.getLength())
+            if (!size)
                 std::cout << "Array is empty.\n\n";
             else {
                 arr.quickSort(0, size - 1);
@@ -119,6 +123,45 @@ void choice(const int &c, DynArray &arr) {
             else {
                 arr.countingSort();
                 std::cout << "Sorted array.\n\n";
+            }
+            break;
+        }
+
+        case 8: {
+            const int size = arr.getLength();
+            if (!size)
+                std::cout << "Array is empty.\n\n";
+            else {
+                DynArray a1(arr), a2(arr), a3(arr);
+
+                std::ofstream out("times.txt");
+                while (!out.is_open()) {
+                    std::cout << "File didn't open, give me just a bit\n";
+                    out.open("times.txt", std::ios::out);
+                }
+
+                clock_t time = clock();
+                arr.insertionSort();
+                time = clock() - time;
+                out << "Insertion sort: " << (double) time / CLOCKS_PER_SEC << "\n";
+
+                time = clock();
+                a1.shellSort();
+                time = clock() - time;
+                out << "Shell sort: " << (double) time / CLOCKS_PER_SEC << "\n";
+
+                time = clock();
+                a2.quickSort(0, size - 1);
+                time = clock() - time;
+                out << "Quick sort: " << (double) time / CLOCKS_PER_SEC << "\n";
+
+                time = clock();
+                a3.countingSort();
+                time = clock() - time;
+                out << "Counting sort: " << (double) time / CLOCKS_PER_SEC << "\n";
+
+                out.close();
+                std::cout << "Times saved.\n\n";
             }
             break;
         }
@@ -141,6 +184,7 @@ void menu(DynArray &arr) {
         std::cout << "5. Sort array using Shell sort\n";
         std::cout << "6. Sort array using quick sort\n";
         std::cout << "7. Sort array using counting sort\n";
+        std::cout << "8. Get all sortings times\n";
 
         std::cin >> c;
 
