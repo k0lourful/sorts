@@ -1,7 +1,7 @@
 #pragma once
 
-#include <fstream>
 #include <iostream>
+#include "ExternalSort.h"
 #include "DynArray.h"
 #include "clearScreen.h"
 
@@ -166,6 +166,11 @@ void choice(const int &c, DynArray &arr) {
             break;
         }
 
+        case 9: {
+            naturalSort("arr.txt");
+            break;
+        }
+
         default:
             std::cout << "Invalid input, try again.\n\n";
             break;
@@ -185,6 +190,7 @@ void menu(DynArray &arr) {
         std::cout << "6. Sort array using quick sort\n";
         std::cout << "7. Sort array using counting sort\n";
         std::cout << "8. Get all sortings times\n";
+        std::cout << "9. Sort array in arr.txt using natural sort (external)\n";
 
         std::cin >> c;
 
