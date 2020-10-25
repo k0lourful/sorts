@@ -135,9 +135,9 @@ void choice(const int &c, DynArray &arr) {
                 DynArray a1(arr), a2(arr), a3(arr);
 
                 std::ofstream out("times.txt");
-                while (!out.is_open()) {
+                while (out.fail()) {
                     std::cout << "File didn't open, give me just a bit\n";
-                    out.open("times.txt", std::ios::out);
+                    out.open("times.txt");
                 }
 
                 clock_t time = clock();
@@ -167,7 +167,27 @@ void choice(const int &c, DynArray &arr) {
         }
 
         case 9: {
-            naturalSort("arr.txt");
+            arr.save("arr.txt");
+            std::ofstream out("times_external.txt");
+            while (out.fail()) {
+                std::cout << "File didn't open, give me just a bit\n";
+                out.open("times_external.txt");
+            }
+
+            clock_t time = clock();
+            int k = naturalSort("arr.txt");
+            time = clock() - time;
+            if (k == -1) {
+                out << "File not found.\n";
+                std::cout << "File not found.\n";
+            } else {
+                out << "Natural sort: " << (double) time / CLOCKS_PER_SEC << "; loops: " << k << "\n";
+                std::cout << "Array sorted in " << k << " loops.\n\n";
+            }
+
+            out.close();
+            std::cout << "Times saved.\n\n";
+
             break;
         }
 
@@ -190,7 +210,7 @@ void menu(DynArray &arr) {
         std::cout << "6. Sort array using quick sort\n";
         std::cout << "7. Sort array using counting sort\n";
         std::cout << "8. Get all sortings times\n";
-        std::cout << "9. Sort array in arr.txt using natural sort (external)\n";
+        std::cout << "9. Sort array in arr.txt using natural sort (external), get time\n";
 
         std::cin >> c;
 
