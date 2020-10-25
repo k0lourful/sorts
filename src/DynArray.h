@@ -17,6 +17,7 @@ public:
 	void randomise(const int& min, const int& max);
 	void randomiseDifferentValues();
 	void clear();
+	void save(const char* fileName);
 
 	void insertionSort();
 	void shellSort();

@@ -1,6 +1,7 @@
 #include "DynArray.h"
 #include <random>
 #include <chrono>
+#include <fstream>
 
 DynArray::DynArray() : arr(nullptr), len(0) {}
 
@@ -57,6 +58,16 @@ void DynArray::randomiseDifferentValues() {
 void DynArray::clear() {
     delete[] arr;
     len = 0;
+}
+
+void DynArray::save(const char* fileName){
+    std::fstream file(fileName, std::ios::out);
+    while(file.fail())
+        file.open(fileName, std::ios::out);
+
+    for(int i = 0; i < len; ++i)
+        file << arr[i] << " ";
+    file.close();
 }
 
 void DynArray::insertionSort() {
