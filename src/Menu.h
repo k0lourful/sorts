@@ -191,6 +191,44 @@ void choice(const int &c, DynArray &arr) {
             break;
         }
 
+        case 10: {
+            int size = arr.getLength();
+            if (!size)
+                std::cout << "Array is empty.\n\n";
+            else if (!arr.isSorted())
+                std::cout << "Array is not sorted.\n\n";
+            else {
+                std::ofstream out("times_search.txt");
+                while (out.fail()) {
+                    std::cout << "File didn't open, give me just a bit\n";
+                    out.open("times_search.txt");
+                }
+
+                int target1, target2;
+                std::cout << "Enter targets: ";
+                std::cin >> target1 >> target2;
+
+                clock_t time = clock();
+                int ind1 = arr.interpolationSearch(target1, 0, size - 1);
+                time = clock() - time;
+                if (ind1 == -1) {
+                    std::cout << "Value " << target1 << " doesn't exist.\n\n";
+                    out << "Value " << target1 << " doesn't exist.";
+                } else {
+                    std::cout << "Target 1 index = " << ind1;
+                    out << "Interpolation search: " << (double) time / CLOCKS_PER_SEC << "; loops: ";
+
+                    time = clock();
+                    int ind2 = arr.interpolativeHuntAndSearch(target1, target2);
+                    time = clock() - time;
+                    if (ind2 == -1) std::cout << "Value 2 doesn't exist.\n\n";
+                    else std::cout << "Target 2 index = " << ind2;
+                }
+            }
+
+            break;
+        }
+
         default:
             std::cout << "Invalid input, try again.\n\n";
             break;
@@ -211,6 +249,7 @@ void menu(DynArray &arr) {
         std::cout << "7. Sort array using counting sort\n";
         std::cout << "8. Get all sortings times\n";
         std::cout << "9. Sort array in arr.txt using natural sort (external), get time\n";
+        std::cout << "10. Execute interpolation and interpolative hunt & search, get time\n";
 
         std::cin >> c;
 
