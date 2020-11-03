@@ -10,6 +10,7 @@ public:
 	DynArray(DynArray& copy);
 	~DynArray();
 
+	bool isSorted();
 	void allocateMemory(const int &len);
 	int getLength() const;
 	void setValue(const int &ind, const int &val);
@@ -23,4 +24,7 @@ public:
 	void shellSort();
     void quickSort(const int& min, const int& max);
     void countingSort();
+
+    int interpolationSearch(const int& target, int min, int max);
+    int interpolativeHuntAndSearch(const int& target1, const int& target2);
 };

@@ -60,12 +60,12 @@ void DynArray::clear() {
     len = 0;
 }
 
-void DynArray::save(const char* fileName){
+void DynArray::save(const char *fileName) {
     std::fstream file(fileName, std::ios::out);
-    while(file.fail())
+    while (file.fail())
         file.open(fileName, std::ios::out);
 
-    for(int i = 0; i < len; ++i)
+    for (int i = 0; i < len; ++i)
         file << arr[i] << " ";
     file.close();
 }
@@ -157,3 +157,48 @@ void DynArray::countingSort() {
             arr[k++] = i + min;
     delete[] counts;
 }
+
+// returns -1 if value doesn't exist
+int DynArray::interpolationSearch(const int &target, int min, int max) {
+    int mid;
+    while (min <= max) {
+        if (arr[min] == arr[max]) {
+            if (arr[min] == target)
+                return min;
+            else
+                return -1;
+        }
+
+        mid = min + ((target - arr[min]) * ((max - min) / (arr[max] - arr[min])));
+        if (mid < min || mid > max)
+            return -1;
+
+        if (target == arr[mid])
+            return mid;
+        else if (target < arr[mid])
+            max = mid - 1;
+        else
+            min = mid + 1;
+    }
+
+    return -1;
+}
+
+int DynArray::interpolativeHuntAndSearch(const int &target1, const int &target2) {
+    int mid = interpolationSearch(target1, 0, len - 1);
+    if (mid == -1) return -1;
+
+    if (target2 < arr[mid])
+        return interpolationSearch(target2, 0, mid - 1);
+    else
+        return interpolationSearch(target2, mid + 1, len - 1);
+}
+
+bool DynArray::isSorted() {
+    for (int i = 0; i < len - 1; ++i)
+        if (arr[i] > arr[i + 1])
+            return false;
+    return true;
+}
+
+
